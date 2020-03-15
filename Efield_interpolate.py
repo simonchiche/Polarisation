@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import griddata
 
-xi,yi,zi, Ex, Ey = np.loadtxt('gamma.txt', unpack = True) #x = x_antenna, y = y_antenna, z = Etot
+xi,yi,Etoti, Ex, Ey = np.loadtxt('gamma.txt', unpack = True) #x = x_antenna, y = y_antenna
 
 
 fig, ax0 = plt.subplots()
@@ -19,14 +19,14 @@ y = np.linspace(-5000, 5000, 10000) # espace couvert par les antenes autour de l
 
 X, Y = np.meshgrid(x, y) #grille qui pave l'espace
 
-grid_z0 = griddata((xi,yi), zi, (X,Y), method = 'nearest') # valeurs interpolees du champ total
+grid_z0 = griddata((xi,yi), Etoti, (X,Y), method = 'nearest') # valeurs interpolees du champ total
 
 
 im0 = plt.imshow(grid_z0.T, extent=(-4000,4000,-4000,4000), origin='lower') # on plot le resultat
-fig.colorbar(im0,ax=ax0)
+cbar = fig.colorbar(im0,ax=ax0)
+cbar.set_label(r"$ E\ [\mu V/m]$")
 plt.title('Efield_interpolate')
 plt.xlabel('x[m]')
 plt.ylabel('y[m]')
 plt.savefig('Efield_interpolate.png', dpi = 2000)
 plt.show()
-
